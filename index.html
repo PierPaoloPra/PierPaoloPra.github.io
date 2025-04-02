@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            background: #ffffff;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            text-align: right;
+            padding: 20px;
+        }
+
+        nav a {
+            color: #333333;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff5f2e; /* IDEO's orange */
+        }
+
+        section {
+            padding: 80px 0;
+            min-height: 100vh;
+        }
+
+        h1, h2 {
+            color: #ff5f2e; /* IDEO's orange */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            background: #f5f5f5;
+            border: 1px solid #00c4b4; /* IDEO's light blue */
+            color: #333333;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #ff5f2e;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #e55428;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                text-align: center;
+            }
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#what-we-do">What We Do</a>
+            <a href="#who-we-are">Who We Are</a>
+            <a href="#data-collection">Contact</a>
+            <a href="#" id="translate">Translate</a>
+        </nav>
+    </header>
+
+    <section id="what-we-do" class="container">
+        <h1>What We Do</h1>
+        <p>Describe your services or offerings here.</p>
+    </section>
+
+    <section id="who-we-are" class="container">
+        <h2>Who We Are</h2>
+        <p>Tell visitors about yourself or your team here.</p>
+    </section>
+
+    <section id="data-collection" class="container">
+        <h2>Contact Us</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="company" placeholder="Company">
+            </div>
+            <div class="form-group">
+                <input type="text" id="contact" placeholder="Phone or Email" required>
+            </div>
+            <div class="form-group">
+                <textarea id="happening" placeholder="What's happening?" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <textarea id="want" placeholder="What do you want?" rows="4"></textarea>
+            </div>
+            <button type="submit">Send Request</button>
+        </form>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <script>
+        // Form submission handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                company: document.getId('company').value,
+                contact: document.getElementById('contact').value,
+                happening: document.getElementById('happening').value,
+                want: document.getElementById('want').value
+            };
+
+            try {
+                // Convert to JSON and compress
+                const jsonData = JSON.stringify(formData);
+                const compressed = LZString.compressToBase64(jsonData);
+                
+                // Create mailto link
+                const mailtoLink = `mailto:your@email.com?subject=info%20request&body=${encodeURIComponent(compressed)}`;
+                
+                // Fallback if data is too large
+                if (mailtoLink.length > 2000) {
+                    throw new Error('Data too large');
+                }
+                
+                window.location.href = mailtoLink;
+                this.reset();
+                alert('Request sent successfully!');
+                
+            } catch (error) {
+                // Fallback: plain text email
+                const fallbackBody = `Name: ${formData.name}\nCompany: ${formData.company}\nContact: ${formData.contact}\nWhat's happening: ${formData.happening}\nWhat they want: ${formData.want}`;
+                const fallbackLink = `mailto:your@email.com?subject=info%20request&body=${encodeURIComponent(fallbackBody)}`;
+                
+                window.location.href = fallbackLink;
+                this.reset();
+                alert('Request sent using fallback method due to size limitations.');
+            }
+        });
+
+        // Translation functionality
+        document.getElementById('translate').addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = prompt('Enter language code (e.g., "es" for Spanish, "fr" for French):');
+            if (lang) {
+                const url = `https://translate.google.com/translate?sl=en&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
+                window.open(url, '_blank');
+            }
+        });
+    </script>
+</body>
+</html>
