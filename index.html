@@ -3,188 +3,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Personal Page</title>
+    <title>Risolvo - Problem Solving & Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
-        body {
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: #ffffff;
-            color: #333333;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #000000;
+            color: #DFD6C7;
+            font-family: 'Montserrat', sans-serif;
             line-height: 1.6;
+            font-size: 16px; /* Base font size */
+            padding-top: 60px; /* Height of the fixed header */
+            margin: 0 15px; /* Little side margin */
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        /* Header */
         header {
             position: fixed;
-            width: 100%;
-            background: #ffffff;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #1a1a1a; /* Slightly different from body */
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 25px; /* Increased padding for icon spacing */
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 1px solid #333;
         }
 
+        .menu-icon {
+            cursor: pointer;
+            width: 30px;
+            height: 22px;
+            position: relative;
+            z-index: 1001; /* Above nav */
+        }
+
+        .menu-icon span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: #DFD6C7;
+            border-radius: 3px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .menu-icon span:nth-child(1) { top: 0px; }
+        .menu-icon span:nth-child(2), .menu-icon span:nth-child(3) { top: 9px; }
+        .menu-icon span:nth-child(4) { top: 18px; }
+
+        /* Menu Icon Animation when open */
+        .menu-icon.open span:nth-child(1) { top: 9px; width: 0%; left: 50%; }
+        .menu-icon.open span:nth-child(2) { transform: rotate(45deg); }
+        .menu-icon.open span:nth-child(3) { transform: rotate(-45deg); }
+        .menu-icon.open span:nth-child(4) { top: 9px; width: 0%; left: 50%; }
+
+
+        /* Navigation Menu */
         nav {
-            text-align: right;
-            padding: 20px;
+            position: fixed;
+            top: 60px; /* Below header */
+            right: 0;
+            background-color: #1a1a1a;
+            border-left: 1px solid #333;
+            border-bottom: 1px solid #333;
+            padding: 15px 25px;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            align-items: flex-start; /* Align text to left */
+            z-index: 999;
+            min-width: fit-content; /* Size required by text */
+        }
+
+        nav.active {
+            display: flex;
         }
 
         nav a {
-            color: #333333;
+            color: #DFD6C7;
             text-decoration: none;
-            margin-left: 20px;
-            transition: color 0.3s;
+            padding: 8px 0;
+            font-size: 1.1em;
+            transition: color 0.2s ease-in-out;
         }
 
         nav a:hover {
-            color: #ff5f2e; /* IDEO's orange */
+            color: yellow;
         }
 
+        /* Sections */
         section {
-            padding: 80px 0;
-            min-height: 100vh;
+            padding: 80px 0; /* Top/bottom padding, side padding handled by body margin */
+            min-height: 90vh; /* Make sections feel substantial */
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed; /* Background does not scroll */
+            border-bottom: 1px solid #222; /* Subtle separator */
+            display: flex; /* Helps with vertical alignment if needed */
+            flex-direction: column;
+            justify-content: center; /* Vertically center content */
         }
 
-        h1, h2 {
-            color: #ff5f2e; /* IDEO's orange */
+        section:last-of-type {
+             border-bottom: none;
         }
 
-        .form-group {
+        section h2 {
+            color: #DFD6C7;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            transition: color 0.2s ease-in-out;
+            cursor: default; /* Indicate it's not a link */
+            text-align: left;
+            width: 100%;
+        }
+
+        section h2:hover {
+            color: yellow;
+        }
+
+        section p, section li {
+            font-size: 1.1em;
+            text-align: left;
+            max-width: 100%; /* Extend across the page */
             margin-bottom: 15px;
         }
 
-        input, textarea {
+        section ul {
+            list-style-position: outside;
+            padding-left: 20px; /* Indent bullet points */
+            max-width: 100%;
+        }
+        section ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Write Me Form specific styles */
+        #writeme form {
             width: 100%;
-            padding: 8px;
-            background: #f5f5f5;
-            border: 1px solid #00c4b4; /* IDEO's light blue */
-            color: #333333;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        #writeme input[type="text"],
+        #writeme input[type="email"],
+        #writeme input[type="tel"],
+        #writeme textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(34, 34, 34, 0.8); /* Slightly transparent background */
+            border: 1px solid #444;
+            color: #DFD6C7;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
             border-radius: 4px;
         }
 
-        button {
-            background: #ff5f2e;
-            color: #ffffff;
+         #writeme input::placeholder,
+         #writeme textarea::placeholder {
+            color: #888;
+            opacity: 1; /* Ensure placeholder is visible */
+         }
+
+         #writeme textarea {
+            min-height: 100px;
+            resize: vertical;
+         }
+
+         #writeme button {
+            padding: 12px 20px;
+            background-color: #DFD6C7;
+            color: #000000;
             border: none;
-            padding: 10px 20px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            font-family: 'Montserrat', sans-serif;
             border-radius: 4px;
-            transition: background 0.3s;
+            transition: background-color 0.3s ease-in-out;
+            align-self: flex-start; /* Align button left */
+         }
+
+         #writeme button:hover {
+            background-color: yellow;
+         }
+
+         #form-message {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(50, 50, 50, 0.8);
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: yellow;
+            font-style: italic;
+            display: none; /* Hidden by default */
+            width: 100%;
+            text-align: left;
+         }
+
+         #form-message.error {
+             color: #ff8a8a; /* Reddish color for errors */
+         }
+
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            padding: 20px 15px; /* Match body side margin */
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            gap: 10px; /* Space between items if they wrap */
+            font-size: 0.9em;
+            border-top: 1px solid #333;
         }
 
-        button:hover {
-            background: #e55428;
+        .footer-left {
+            text-align: left;
         }
 
+        .footer-right {
+            text-align: right;
+            font-style: italic;
+        }
+
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
+            body {
+                font-size: 15px;
+                 margin: 0 10px; /* Slightly smaller margin */
+            }
+             header {
+                padding: 0 15px;
+            }
             nav {
+                 padding: 15px 20px;
+            }
+
+            section h2 {
+                font-size: 2em;
+            }
+
+            section p, section li {
+                font-size: 1em;
+            }
+
+            footer {
+                flex-direction: column; /* Stack footer items */
+                align-items: center; /* Center items */
                 text-align: center;
             }
-            nav a {
-                display: block;
-                margin: 10px 0;
+            .footer-left, .footer-right {
+                text-align: center;
+                width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+             body {
+                padding-top: 50px; /* Smaller header height */
+                 margin: 0 8px;
+            }
+             header {
+                 height: 50px;
+            }
+             nav {
+                 top: 50px;
+            }
+            section h2 {
+                font-size: 1.8em;
+                 margin-bottom: 20px;
+            }
+            section {
+                padding: 60px 0;
+            }
+            #writeme button {
+                width: 100%; /* Full width button on small screens */
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
 <body>
+
     <header>
-        <nav>
-            <a href="#what-we-do">What We Do</a>
-            <a href="#who-we-are">Who We Are</a>
-            <a href="#data-collection">Contact</a>
-            <a href="#" id="translate">Translate</a>
+        <div class="menu-icon" id="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="nav-menu">
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#writeme" class="nav-link">Write Me</a>
         </nav>
     </header>
 
-    <section id="what-we-do" class="container">
-        <h1>What We Do</h1>
-        <p>Describe your services or offerings here.</p>
-    </section>
+    <main>
+        <section id="solve">
+            <h2>SOLVE PROBLEMS</h2>
+            <p>In a world of chatter, smoke, colorful presentations, shiny models and certified (in)expert that do what they want and LLMs that tell you what you have to do,</p>
+            <p>I study your reality, discuss it with you and help you create applicable transversal solutions.</p>
+        </section>
 
-    <section id="who-we-are" class="container">
-        <h2>Who We Are</h2>
-        <p>Tell visitors about yourself or your team here.</p>
-    </section>
+        <section id="services">
+            <h2>SERVICES</h2>
+            <ul>
+                <li>Problem solving (almost no problem is what it seems)</li>
+                <li>Decision intelligence (we are irrational animals 98% of the time)</li>
+                <li>Project management (defining objectives, understanding the team and means, building and executing a plan, managing risk and unforeseen events)</li>
+                <li>Technical development (embedded software, electronics, mechatronics, mechanics, hydraulics; functionality, architecture, safety, interactions)</li>
+                <li>Management of human dynamics (behaviors, conflicts, negotiation, motivation, real measurement of skills)</li>
+            </ul>
+        </section>
 
-    <section id="data-collection" class="container">
-        <h2>Contact Us</h2>
-        <form id="contactForm">
-            <div class="form-group">
-                <input type="text" id="name" placeholder="Name" required>
-            </div>
-            <div class="form-group">
-                <input type="text" id="company" placeholder="Company">
-            </div>
-            <div class="form-group">
-                <input type="text" id="contact" placeholder="Phone or Email" required>
-            </div>
-            <div class="form-group">
-                <textarea id="happening" placeholder="What's happening?" rows="4"></textarea>
-            </div>
-            <div class="form-group">
-                <textarea id="want" placeholder="What do you want?" rows="4"></textarea>
-            </div>
-            <button type="submit">Send Request</button>
-        </form>
-    </section>
+        <section id="about">
+            <h2>ABOUT ME</h2>
+            <p>I love intelligent people and discovering new points of view. I love close-knit teams. I love finding solutions where there shouldn't be any. I love reality, I only like theory if it works in practice. I love learning and experimenting. I love to use time well.</p>
+            <p>I work with the support of great specialist (if you want to join them, write me why).</p>
+            <p>Pier Paolo Prandini</p>
+        </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+        <section id="writeme">
+            <h2>WRITE ME</h2>
+            <form id="contact-form">
+                <input type="text" id="name_company" name="name_company" placeholder="name and company" required>
+                <input type="text" id="phone_email" name="phone_email" placeholder="phone or email" required>
+                <textarea id="what_happens" name="what_happens" placeholder="what happens" required></textarea>
+                <textarea id="what_goal" name="what_goal" placeholder="what is your goal" required></textarea>
+                <button type="submit">Send Request</button>
+            </form>
+            <div id="form-message"></div>
+        </section>
+    </main>
+
+    <footer>
+        <span class="footer-left">© 2025 Risolvo</span>
+        <span class="footer-right" id="aphorism"></span>
+    </footer>
+
+    <!-- LZString Library (Minified) -->
+    <script>/*
+
+Copyright (c) 2013 Pieroxy pieroxy@pieroxy.net
+This work is free. You can redistribute it and/or modify it
+under the terms of the WTFPL, Version 2
+as published by Sam Hocevar. See the COPYING file for more details.
+
+LZString4 nodejs module adaptation by Diogo Duailibe
+*/
+// private property
+var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",_f:String.fromCharCode,compressToBase64:function(o){if(null==o)return"";var n=LZString._compress(o,6,function(o){return LZString._keyStr.charAt(o)});switch(n.length%4){default:case 0:return n;case 1:return n+"===";case 2:return n+"==";case 3:return n+"="}},decompressFromBase64:function(o){return null==o?"":""==o?null:LZString._decompress(o.length,32,function(n){return LZString._getBaseValue(LZString._keyStr,o.charAt(n))})},compressToUTF16:function(o){return null==o?"":LZString._compress(o,15,function(o){return LZString._f(o+32)})+" "},decompressFromUTF16:function(o){return null==o?"":""==o?null:LZString._decompress(o.length,16384,function(n){return o.charCodeAt(n)-32})},compressToUint8Array:function(o){for(var n=LZString.compress(o),t=new Uint8Array(2*n.length),r=0,e=n.length;r<e;r++){var i=n.charCodeAt(r);t[2*r]=i>>>8,t[2*r+1]=i%256}return t},decompressFromUint8Array:function(o){if(null==o||void 0===o)return LZString.decompress(o);for(var n=new Array(o.length/2),t=0,r=n.length;t<r;t++)n[t]=256*o[2*t]+o[2*t+1];var e=[];return n.forEach(function(o){e.push(LZString._f(o))}),LZString.decompress(e.join(""))},compressToEncodedURIComponent:function(o){return null==o?"":LZString._compress(o,6,function(o){return LZString._keyStrUriSafe.charAt(o)})},decompressFromEncodedURIComponent:function(o){return null==o?"":""==o?null:(o=o.replace(/ /g,"+"),LZString._decompress(o.length,32,function(n){return LZString._getBaseValue(LZString._keyStrUriSafe,o.charAt(n))}))},compress:function(o){return LZString._compress(o,16,function(o){return LZString._f(o)})},_compress:function(o,n,t){if(null==o)return"";var r,e,i={},a={},s="",f="",l="",c=2,p=3,d=2,u=[],_=0,g=0;for(m=0;m<o.length;m+=1)if(s=o.charAt(m),Object.prototype.hasOwnProperty.call(i,s)||(i[s]=p++,a[s]=!0),f=l+s,Object.prototype.hasOwnProperty.call(i,f))l=f;else{if(Object.prototype.hasOwnProperty.call(a,l)){if(l.charCodeAt(0)<256){for(r=0;r<d;r++ G(o,_){"use strict";for(var n,t={},r=0,e=o.length;r<e;r++)for(var i=o[r],a=1;a<i.length;a++){var s=i.slice(0,a),f=i[a];void 0===t[s] G(a,_){a=Number(a);for(var s=[],f=0;f<a;f++)s[f]=0;for(f=0;;){if(s[f]++,f==a-1)return s;0==s[f]%_.length&&(s[f]=0,f++)}}}};
+</script>
+
     <script>
-        // Form submission handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                company: document.getId('company').value,
-                contact: document.getElementById('contact').value,
-                happening: document.getElementById('happening').value,
-                want: document.getElementById('want').value
-            };
+        document.addEventListener('DOMContentLoaded', () => {
 
-            try {
-                // Convert to JSON and compress
-                const jsonData = JSON.stringify(formData);
-                const compressed = LZString.compressToBase64(jsonData);
-                
-                // Create mailto link
-                const mailtoLink = `mailto:your@email.com?subject=info%20request&body=${encodeURIComponent(compressed)}`;
-                
-                // Fallback if data is too large
-                if (mailtoLink.length > 2000) {
-                    throw new Error('Data too large');
+            // --- Menu Toggle ---
+            const menuIcon = document.getElementById('menu-icon');
+            const navMenu = document.getElementById('nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            menuIcon.addEventListener('click', () => {
+                menuIcon.classList.toggle('open');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when a link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuIcon.classList.remove('open');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Close menu if clicking outside of it (optional but good UX)
+            document.addEventListener('click', (event) => {
+                const isClickInsideNav = navMenu.contains(event.target);
+                const isClickOnIcon = menuIcon.contains(event.target);
+
+                if (!isClickInsideNav && !isClickOnIcon && navMenu.classList.contains('active')) {
+                    menuIcon.classList.remove('open');
+                    navMenu.classList.remove('active');
                 }
-                
-                window.location.href = mailtoLink;
-                this.reset();
-                alert('Request sent successfully!');
-                
-            } catch (error) {
-                // Fallback: plain text email
-                const fallbackBody = `Name: ${formData.name}\nCompany: ${formData.company}\nContact: ${formData.contact}\nWhat's happening: ${formData.happening}\nWhat they want: ${formData.want}`;
-                const fallbackLink = `mailto:your@email.com?subject=info%20request&body=${encodeURIComponent(fallbackBody)}`;
-                
-                window.location.href = fallbackLink;
-                this.reset();
-                alert('Request sent using fallback method due to size limitations.');
-            }
-        });
+            });
 
-        // Translation functionality
-        document.getElementById('translate').addEventListener('click', function(e) {
-            e.preventDefault();
-            const lang = prompt('Enter language code (e.g., "es" for Spanish, "fr" for French):');
-            if (lang) {
-                const url = `https://translate.google.com/translate?sl=en&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
-                window.open(url, '_blank');
+
+            // --- Random Backgrounds ---
+            const sections = ['solve', 'services', 'about', 'writeme'];
+            sections.forEach(sectionId => {
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    const randomNum = Math.floor(Math.random() * 5) + 1;
+                    sectionElement.style.backgroundImage = `url('${sectionId}${randomNum}.jpg')`;
+                } else {
+                    console.warn(`Section element with ID "${sectionId}" not found.`);
+                }
+            });
+
+            // --- Random Aphorism ---
+            const aphorisms = [
+                "When someone is wearing a mask, he is going to tell the truth (Bob Dylan)",
+                "You can ignore reality, but you cannot ignore the consequences of ignoring reality (Ayn Rand)",
+                "Zig when others Zag",
+                "Work quickly, prioritise and delegate (Elon Musk)",
+                "Don't follow rules, follow principles",
+                "It is necessary to be superficial, the world is too complex to be fully understood"
+            ];
+            const aphorismElement = document.getElementById('aphorism');
+            if (aphorismElement) {
+                const randomIndex = Math.floor(Math.random() * aphorisms.length);
+                aphorismElement.textContent = aphorisms[randomIndex];
             }
+
+            // --- Form Handling ---
+            const contactForm = document.getElementById('contact-form');
+            const formMessage = document.getElementById('form-message');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', (event) => {
+                    event.preventDefault(); // Prevent default form submission
+                    formMessage.style.display = 'none'; // Hide previous messages
+                    formMessage.classList.remove('error');
+
+                    try {
+                        const nameCompany = document.getElementById('name_company').value.trim();
+                        const phoneEmail = document.getElementById('phone_email').value.trim();
+                        const whatHappens = document.getElementById('what_happens').value.trim();
+                        const whatGoal = document.getElementById('what_goal').value.trim();
+
+                        // Basic validation (HTML5 'required' already helps)
+                        if (!nameCompany || !phoneEmail || !whatHappens || !whatGoal) {
+                             throw new Error("Please fill in all required fields.");
+                        }
+
+                        const formData = {
+                            name_co: nameCompany,
+                            contact: phoneEmail,
+                            issue: whatHappens,
+                            goal: whatGoal
+                        };
+
+                        const jsonData = JSON.stringify(formData);
+                        const compressedData = LZString.compressToBase64(jsonData);
+
+                        // Optional: Check length (modern mailto limits are large, but good practice)
+                        const MAX_MAILTO_LEN = 2000; // Conservative limit
+                        if (compressedData.length > MAX_MAILTO_LEN) {
+                            throw new Error("Form data is too long after compression. Please shorten your descriptions.");
+                        }
+
+                        const subject = "Request";
+                        const mailtoBody = "DATA:" + compressedData;
+                        const mailtoLink = `mailto:pierpaolo.prandini@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailtoBody)}`;
+
+                        // Display success message *before* attempting redirect
+                        formMessage.textContent = "An email draft with the compressed data will be opened in your email client. Please check and send it to be contacted back (if the request has sense).";
+                        formMessage.style.display = 'block';
+
+                        // Attempt to open mail client
+                         window.location.href = mailtoLink;
+
+                        // Optionally clear the form after successful preparation
+                         // contactForm.reset();
+
+                    } catch (error) {
+                        console.error("Form submission error:", error);
+                        formMessage.textContent = `Error: ${error.message || "Could not process the form. Please try again or contact directly."}`;
+                        formMessage.classList.add('error');
+                        formMessage.style.display = 'block';
+                    }
+                });
+            } else {
+                 console.error("Contact form element not found.");
+            }
+
         });
     </script>
+
 </body>
 </html>
