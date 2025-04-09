@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risolvo - Problem Solving & Solutions</title>
+    <title>Risolvo - Professional Problem Solving</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Reset and Base Styles */
+        /* --- Global Reset & Basic Styling --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,226 +18,287 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px; /* Base font size */
         }
 
         body {
+            font-family: 'Montserrat', sans-serif;
             background-color: #000000;
             color: #DFD6C7;
-            font-family: 'Montserrat', sans-serif;
             line-height: 1.6;
-            font-size: 16px; /* Base font size */
-            padding-top: 60px; /* Height of the fixed header */
-            margin: 0 15px; /* Little side margin */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 70px; /* Avoid content overlap with fixed header */
         }
 
-        /* Header */
+        main {
+            flex: 1; /* Ensures main content takes available space, pushing footer down */
+        }
+
+        /* --- Links --- */
+        a {
+            color: #DFD6C7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: yellow;
+        }
+
+        /* --- Titles --- */
+        h1, h2, h3, h4, h5, h6 {
+            color: #DFD6C7;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+        /* Add hover effect specifically to section titles */
+        section h2:hover {
+             color: yellow;
+        }
+
+
+        /* --- Header --- */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
-            background-color: #1a1a1a; /* Slightly different from body */
+            background-color: #000000; /* Solid Black Background */
+            /* backdrop-filter: blur(5px); Remove blur for solid background */
+            padding: 15px 2%; /* Use percentage for side margin */
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; /* Align items to the right */
             align-items: center;
-            padding: 0 25px; /* Increased padding for icon spacing */
             z-index: 1000;
-            border-bottom: 1px solid #333;
+            height: 70px; /* Fixed height for predictability */
+            border-bottom: 1px solid rgba(223, 214, 199, 0.2); /* Subtle separator */
         }
 
         .menu-icon {
+            font-size: 1.8rem;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
             width: 30px;
-            height: 22px;
-            position: relative;
-            z-index: 1001; /* Above nav */
+            height: 25px;
+            z-index: 1002; /* Above nav */
         }
 
         .menu-icon span {
             display: block;
-            position: absolute;
             height: 3px;
             width: 100%;
-            background: #DFD6C7;
+            background-color: #DFD6C7;
             border-radius: 3px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
+            transition: all 0.3s ease-in-out;
         }
 
-        .menu-icon span:nth-child(1) { top: 0px; }
-        .menu-icon span:nth-child(2), .menu-icon span:nth-child(3) { top: 9px; }
-        .menu-icon span:nth-child(4) { top: 18px; }
+        /* Menu Icon Animation (Optional 'X') */
+         nav.active + .menu-icon span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+        nav.active + .menu-icon span:nth-child(2) {
+            opacity: 0;
+        }
+         nav.active + .menu-icon span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
 
-        /* Menu Icon Animation when open */
-        .menu-icon.open span:nth-child(1) { top: 9px; width: 0%; left: 50%; }
-        .menu-icon.open span:nth-child(2) { transform: rotate(45deg); }
-        .menu-icon.open span:nth-child(3) { transform: rotate(-45deg); }
-        .menu-icon.open span:nth-child(4) { top: 9px; width: 0%; left: 50%; }
 
-
-        /* Navigation Menu */
         nav {
-            position: fixed;
-            top: 60px; /* Below header */
-            right: 0;
-            background-color: #1a1a1a;
-            border-left: 1px solid #333;
-            border-bottom: 1px solid #333;
-            padding: 15px 25px;
-            display: none; /* Initially hidden */
-            flex-direction: column;
-            align-items: flex-start; /* Align text to left */
-            z-index: 999;
-            min-width: fit-content; /* Size required by text */
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 70px; /* Position below header */
+            right: 0; /* Align to the right edge */
+            background-color: rgba(15, 15, 15, 0.98); /* Keep menu dropdown slightly transparent */
+            padding: 20px 30px;
+            border-radius: 0 0 0 8px; /* Rounded bottom-left corner */
+            box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.5);
+            min-width: 150px; /* Ensure a minimum width */
+            width: auto; /* Size based on content */
+            z-index: 1001; /* Below menu icon, above content */
         }
 
         nav.active {
-            display: flex;
+            display: block; /* Show when active */
         }
 
-        nav a {
-            color: #DFD6C7;
-            text-decoration: none;
-            padding: 8px 0;
-            font-size: 1.1em;
-            transition: color 0.2s ease-in-out;
+        nav ul {
+            list-style: none;
         }
 
-        nav a:hover {
-            color: yellow;
-        }
-
-        /* Sections */
-        section {
-            padding: 80px 0; /* Top/bottom padding, side padding handled by body margin */
-            min-height: 90vh; /* Make sections feel substantial */
-            background-size: cover;
-            background-position: center center;
-            background-attachment: fixed; /* Background does not scroll */
-            border-bottom: 1px solid #222; /* Subtle separator */
-            display: flex; /* Helps with vertical alignment if needed */
-            flex-direction: column;
-            justify-content: center; /* Vertically center content */
-        }
-
-        section:last-of-type {
-             border-bottom: none;
-        }
-
-        section h2 {
-            color: #DFD6C7;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            transition: color 0.2s ease-in-out;
-            cursor: default; /* Indicate it's not a link */
-            text-align: left;
-            width: 100%;
-        }
-
-        section h2:hover {
-            color: yellow;
-        }
-
-        section p, section li {
-            font-size: 1.1em;
-            text-align: left;
-            max-width: 100%; /* Extend across the page */
+        nav ul li {
             margin-bottom: 15px;
         }
 
-        section ul {
-            list-style-position: outside;
-            padding-left: 20px; /* Indent bullet points */
-            max-width: 100%;
-        }
-        section ul li {
-            margin-bottom: 10px;
+        nav ul li:last-child {
+            margin-bottom: 0;
         }
 
-        /* Write Me Form specific styles */
-        #writeme form {
+        nav ul li a {
+            font-size: 1.1rem;
+            font-weight: 400;
+            display: block; /* Make the whole area clickable */
+        }
+
+
+        /* --- Sections --- */
+        section {
+            min-height: 80vh; /* Give sections substantial height */
+            padding: 80px 5%; /* Vertical padding and side margin */
+            display: flex; /* Use flexbox for content alignment */
+            align-items: center; /* Vertically center content */
+            justify-content: flex-start; /* Align content to the left */
+            position: relative; /* Needed for background */
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed; /* Image doesn't scroll */
+            background-repeat: no-repeat;
+            text-align: left;
+        }
+
+        .section-content {
+            background-color: rgba(0, 0, 0, 0.65); /* Darkened background for text */
+            padding: 30px 40px;
+            border-radius: 5px;
+            max-width: 100%; /* Ensure it respects section padding */
+            width: 100%; /* Extend across the available width within padding */
+        }
+
+        /* Specific section styling */
+        #services ul {
+            list-style: disc;
+            padding-left: 25px; /* Indent list items */
+             margin-top: 1rem;
+        }
+         #services li {
+            margin-bottom: 0.8rem;
+        }
+
+        #about p {
+             margin-bottom: 1rem;
+        }
+
+        /* --- Write Me Section (Form) --- */
+        #writeme .section-content {
+             /* Container still has dark background */
+             padding: 30px 20px;
+        }
+
+        #contact-form {
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px; /* Space between form elements */
         }
 
-        #writeme input[type="text"],
-        #writeme input[type="email"],
-        #writeme input[type="tel"],
-        #writeme textarea {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: rgba(34, 34, 34, 0.8); /* Slightly transparent background */
-            border: 1px solid #444;
-            color: #DFD6C7;
+        #contact-form label { /* Visually hidden */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        #contact-form input[type="text"],
+        #contact-form textarea {
+            background-color: transparent; /* TRANSPARENT background */
+            border: none; /* NO border */
+            border-bottom: 1px solid transparent; /* Prevent layout shift on focus */
+            padding: 15px 5px; /* Adjust padding */
+            color: #DFD6C7; /* Text color */
             font-family: 'Montserrat', sans-serif;
-            font-size: 1em;
-            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+            border-radius: 0; /* No radius */
+            transition: border-color 0.3s ease; /* Transition for focus border */
+            -webkit-appearance: none; /* Remove default OS styling */
+            -moz-appearance: none;
+            appearance: none;
         }
 
-         #writeme input::placeholder,
-         #writeme textarea::placeholder {
-            color: #888;
-            opacity: 1; /* Ensure placeholder is visible */
-         }
+        /* Placeholder Styling - appears/disappears on focus/input by default */
+        #contact-form input[type="text"]::placeholder,
+        #contact-form textarea::placeholder {
+            color: #a0988d; /* Lighter placeholder text */
+            opacity: 1;
+            transition: opacity 0.3s ease; /* Optional: fade out */
+        }
 
-         #writeme textarea {
-            min-height: 100px;
+        /* Optional: Slightly fade placeholder on focus if desired (often default) */
+        /* #contact-form input[type="text"]:focus::placeholder,
+        #contact-form textarea:focus::placeholder {
+             opacity: 0.5;
+        } */
+
+
+        /* Style for FOCUS state on transparent inputs */
+        #contact-form input[type="text"]:focus,
+        #contact-form textarea:focus {
+            outline: none; /* Remove default outline */
+            border-bottom: 1px solid yellow; /* Yellow bottom border on focus */
+            background-color: rgba(0,0,0, 0.1); /* Optional subtle dark hint */
+        }
+
+        #contact-form textarea {
             resize: vertical;
-         }
+            min-height: 150px; /* Slightly larger for detailed input */
+        }
 
-         #writeme button {
-            padding: 12px 20px;
+        #contact-form button {
             background-color: #DFD6C7;
             color: #000000;
             border: none;
+            padding: 15px 25px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.1em;
             font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
             border-radius: 4px;
-            transition: background-color 0.3s ease-in-out;
-            align-self: flex-start; /* Align button left */
-         }
+            transition: background-color 0.3s ease, color 0.3s ease;
+            align-self: flex-start; /* Align button to the left */
+            margin-top: 10px; /* Space above the button */
+        }
 
-         #writeme button:hover {
+        #contact-form button:hover {
             background-color: yellow;
-         }
+            color: #000000;
+        }
 
-         #form-message {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(50, 50, 50, 0.8);
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: yellow;
+        #form-message {
+            margin-top: 15px;
             font-style: italic;
-            display: none; /* Hidden by default */
-            width: 100%;
-            text-align: left;
+            font-size: 0.9rem;
+            min-height: 1.2em; /* Reserve space */
+        }
+         .success-message {
+             color: #a7f0a7;
+         }
+         .error-message {
+             color: #f0a7a7;
          }
 
-         #form-message.error {
-             color: #ff8a8a; /* Reddish color for errors */
-         }
 
-
-        /* Footer */
+        /* --- Footer --- */
         footer {
-            background-color: #1a1a1a;
-            padding: 20px 15px; /* Match body side margin */
-            color: #aaa;
+            background-color: #111111;
+            color: #aaaaaa;
+            padding: 20px 5%; /* Side margin */
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap; /* Allow wrapping on small screens */
             gap: 10px; /* Space between items if they wrap */
-            font-size: 0.9em;
-            border-top: 1px solid #333;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(223, 214, 199, 0.1);
         }
 
         .footer-left {
@@ -247,262 +308,355 @@
         .footer-right {
             text-align: right;
             font-style: italic;
+            max-width: 60%; /* Prevent aphorism taking too much space */
         }
 
-        /* Responsive Adjustments */
+        /* --- Responsiveness --- */
         @media (max-width: 768px) {
-            body {
+            html {
                 font-size: 15px;
-                 margin: 0 10px; /* Slightly smaller margin */
             }
-             header {
-                padding: 0 15px;
+            header {
+                padding: 15px 4%;
             }
-            nav {
-                 padding: 15px 20px;
-            }
-
-            section h2 {
-                font-size: 2em;
-            }
-
-            section p, section li {
-                font-size: 1em;
-            }
-
-            footer {
-                flex-direction: column; /* Stack footer items */
-                align-items: center; /* Center items */
-                text-align: center;
-            }
-            .footer-left, .footer-right {
-                text-align: center;
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
              body {
-                padding-top: 50px; /* Smaller header height */
-                 margin: 0 8px;
-            }
-             header {
-                 height: 50px;
-            }
+                padding-top: 60px;
+             }
+             header, nav {
+                 height: 60px;
+             }
              nav {
-                 top: 50px;
-            }
-            section h2 {
-                font-size: 1.8em;
-                 margin-bottom: 20px;
-            }
+                 top: 60px;
+             }
             section {
-                padding: 60px 0;
+                padding: 60px 4%;
+                min-height: 60vh;
+                background-attachment: scroll; /* Fixed background often jerky on mobile */
             }
-            #writeme button {
-                width: 100%; /* Full width button on small screens */
+             .section-content {
+                 padding: 25px;
+             }
+            footer {
+                flex-direction: column;
+                align-items: center;
                 text-align: center;
+                padding: 20px 4%;
+            }
+            .footer-left,
+            .footer-right {
+                text-align: center;
+                max-width: 100%;
+            }
+            #contact-form button {
+                align-self: stretch;
             }
         }
+
+         @media (max-width: 480px) {
+              html {
+                font-size: 14px;
+            }
+             section {
+                 padding: 40px 3%;
+             }
+              .section-content {
+                 padding: 20px;
+             }
+             h2 {
+                 font-size: 1.6rem;
+             }
+              footer {
+                 padding: 15px 3%;
+             }
+             #contact-form input[type="text"],
+             #contact-form textarea {
+                    padding: 12px 2px;
+             }
+             #contact-form textarea {
+                 min-height: 120px; /* Adjust height for smaller screens */
+            }
+         }
 
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header>
-        <div class="menu-icon" id="menu-icon">
-            <span></span>
+        <nav id="main-nav">
+             <ul>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#writeme">Write Me</a></li>
+            </ul>
+        </nav>
+        <div class="menu-icon" id="menu-toggle">
             <span></span>
             <span></span>
             <span></span>
         </div>
-        <nav id="nav-menu">
-            <a href="#services" class="nav-link">Services</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#writeme" class="nav-link">Write Me</a>
-        </nav>
     </header>
 
+    <!-- Main Content -->
     <main>
+        <!-- Solve Section -->
         <section id="solve">
-            <h2>SOLVE PROBLEMS</h2>
-            <p>In a world of chatter, smoke, colorful presentations, shiny models and certified (in)expert that do what they want and LLMs that tell you what you have to do,</p>
-            <p>I study your reality, discuss it with you and help you create applicable transversal solutions.</p>
+            <div class="section-content">
+                <h2>SOLVE PROBLEMS</h2>
+                <p>In a world of chatter, smoke, colorful presentations, shiny models and certified (in)expert that do what they want and LLMs that tell you what you have to do,</p>
+                <p>I study your reality, discuss it with you and help you create applicable transversal solutions.</p>
+            </div>
         </section>
 
+        <!-- Services Section -->
         <section id="services">
-            <h2>SERVICES</h2>
-            <ul>
-                <li>Problem solving (almost no problem is what it seems)</li>
-                <li>Decision intelligence (we are irrational animals 98% of the time)</li>
-                <li>Project management (defining objectives, understanding the team and means, building and executing a plan, managing risk and unforeseen events)</li>
-                <li>Technical development (embedded software, electronics, mechatronics, mechanics, hydraulics; functionality, architecture, safety, interactions)</li>
-                <li>Management of human dynamics (behaviors, conflicts, negotiation, motivation, real measurement of skills)</li>
-            </ul>
+            <div class="section-content">
+                <h2>SERVICES</h2>
+                <ul>
+                    <li>Problem solving (almost no problem is what it seems)</li>
+                    <li>Decision intelligence (we are irrational animals 98% of the time)</li>
+                    <li>Project management (defining objectives, understanding the team and means, building and executing a plan, managing risk and unforeseen events)</li>
+                    <li>Technical development (embedded software, electronics, mechatronics, mechanics, hydraulics; functionality, architecture, safety, interactions)</li>
+                    <li>Management of human dynamics (behaviors, conflicts, negotiation, motivation, real measurement of skills)</li>
+                </ul>
+            </div>
         </section>
 
+        <!-- About Section -->
         <section id="about">
-            <h2>ABOUT ME</h2>
-            <p>I love intelligent people and discovering new points of view. I love close-knit teams. I love finding solutions where there shouldn't be any. I love reality, I only like theory if it works in practice. I love learning and experimenting. I love to use time well.</p>
-            <p>I work with the support of great specialist (if you want to join them, write me why).</p>
-            <p>Pier Paolo Prandini</p>
+             <div class="section-content">
+                <h2>ABOUT ME</h2>
+                <p>I love intelligent people and discovering new points of view. I love close-knit teams. I love finding solutions where there shouldn't be any. I love reality, I only like theory if it works in practice. I love learning and experimenting. I love to use time well.</p>
+                 <p>I work with the support of great specialist (if you want to join them, write me why).</p>
+                <p>Pier Paolo Prandini</p>
+            </div>
         </section>
 
+        <!-- Write Me Section -->
         <section id="writeme">
-            <h2>WRITE ME</h2>
-            <form id="contact-form">
-                <input type="text" id="name_company" name="name_company" placeholder="name and company" required>
-                <input type="text" id="phone_email" name="phone_email" placeholder="phone or email" required>
-                <textarea id="what_happens" name="what_happens" placeholder="what happens" required></textarea>
-                <textarea id="what_goal" name="what_goal" placeholder="what is your goal" required></textarea>
-                <button type="submit">Send Request</button>
-            </form>
-            <div id="form-message"></div>
+             <div class="section-content"> <!-- Container still has dark background -->
+                <h2>WRITE ME</h2>
+                <form id="contact-form">
+                    <label for="name">Name and company</label>
+                    <input type="text" id="name" name="name" placeholder="Name and company" required>
+
+                    <label for="contact">Phone or email</label>
+                    <input type="text" id="contact" name="contact" placeholder="Phone or email" required>
+
+                    <label for="status">What's going on, here? (be as much detailed as possible)</label>
+                    <textarea id="status" name="status" placeholder="What's going on, here? (be as much detailed as possible)" required></textarea>
+
+                    <!-- Removed Target Field -->
+
+                    <button type="submit">Send Request</button>
+                </form>
+                <p id="form-message"></p>
+            </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer>
-        <span class="footer-left">© 2025 Risolvo</span>
-        <span class="footer-right" id="aphorism"></span>
+        <div class="footer-left">
+            @2025 Risolvo
+        </div>
+        <div class="footer-right" id="aphorism">
+            <!-- Aphorism will be loaded here by JavaScript -->
+        </div>
     </footer>
-
-    <!-- LZString Library (Minified) -->
-    <script>/*
-
-Copyright (c) 2013 Pieroxy pieroxy@pieroxy.net
-This work is free. You can redistribute it and/or modify it
-under the terms of the WTFPL, Version 2
-as published by Sam Hocevar. See the COPYING file for more details.
-
-LZString4 nodejs module adaptation by Diogo Duailibe
-*/
-// private property
-var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",_f:String.fromCharCode,compressToBase64:function(o){if(null==o)return"";var n=LZString._compress(o,6,function(o){return LZString._keyStr.charAt(o)});switch(n.length%4){default:case 0:return n;case 1:return n+"===";case 2:return n+"==";case 3:return n+"="}},decompressFromBase64:function(o){return null==o?"":""==o?null:LZString._decompress(o.length,32,function(n){return LZString._getBaseValue(LZString._keyStr,o.charAt(n))})},compressToUTF16:function(o){return null==o?"":LZString._compress(o,15,function(o){return LZString._f(o+32)})+" "},decompressFromUTF16:function(o){return null==o?"":""==o?null:LZString._decompress(o.length,16384,function(n){return o.charCodeAt(n)-32})},compressToUint8Array:function(o){for(var n=LZString.compress(o),t=new Uint8Array(2*n.length),r=0,e=n.length;r<e;r++){var i=n.charCodeAt(r);t[2*r]=i>>>8,t[2*r+1]=i%256}return t},decompressFromUint8Array:function(o){if(null==o||void 0===o)return LZString.decompress(o);for(var n=new Array(o.length/2),t=0,r=n.length;t<r;t++)n[t]=256*o[2*t]+o[2*t+1];var e=[];return n.forEach(function(o){e.push(LZString._f(o))}),LZString.decompress(e.join(""))},compressToEncodedURIComponent:function(o){return null==o?"":LZString._compress(o,6,function(o){return LZString._keyStrUriSafe.charAt(o)})},decompressFromEncodedURIComponent:function(o){return null==o?"":""==o?null:(o=o.replace(/ /g,"+"),LZString._decompress(o.length,32,function(n){return LZString._getBaseValue(LZString._keyStrUriSafe,o.charAt(n))}))},compress:function(o){return LZString._compress(o,16,function(o){return LZString._f(o)})},_compress:function(o,n,t){if(null==o)return"";var r,e,i={},a={},s="",f="",l="",c=2,p=3,d=2,u=[],_=0,g=0;for(m=0;m<o.length;m+=1)if(s=o.charAt(m),Object.prototype.hasOwnProperty.call(i,s)||(i[s]=p++,a[s]=!0),f=l+s,Object.prototype.hasOwnProperty.call(i,f))l=f;else{if(Object.prototype.hasOwnProperty.call(a,l)){if(l.charCodeAt(0)<256){for(r=0;r<d;r++ G(o,_){"use strict";for(var n,t={},r=0,e=o.length;r<e;r++)for(var i=o[r],a=1;a<i.length;a++){var s=i.slice(0,a),f=i[a];void 0===t[s] G(a,_){a=Number(a);for(var s=[],f=0;f<a;f++)s[f]=0;for(f=0;;){if(s[f]++,f==a-1)return s;0==s[f]%_.length&&(s[f]=0,f++)}}}};
-</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- Menu Toggle ---
-            const menuIcon = document.getElementById('menu-icon');
-            const navMenu = document.getElementById('nav-menu');
-            const navLinks = document.querySelectorAll('.nav-link');
+            // --- Mobile Menu Toggle ---
+            const menuToggle = document.getElementById('menu-toggle');
+            const mainNav = document.getElementById('main-nav');
 
-            menuIcon.addEventListener('click', () => {
-                menuIcon.classList.toggle('open');
-                navMenu.classList.toggle('active');
-            });
-
-            // Close menu when a link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    menuIcon.classList.remove('open');
-                    navMenu.classList.remove('active');
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
                 });
-            });
 
-            // Close menu if clicking outside of it (optional but good UX)
-            document.addEventListener('click', (event) => {
-                const isClickInsideNav = navMenu.contains(event.target);
-                const isClickOnIcon = menuIcon.contains(event.target);
+                 // Close menu when a link is clicked
+                 mainNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                         mainNav.classList.remove('active');
+                    });
+                });
 
-                if (!isClickInsideNav && !isClickOnIcon && navMenu.classList.contains('active')) {
-                    menuIcon.classList.remove('open');
-                    navMenu.classList.remove('active');
-                }
-            });
+                // Optional: Close menu when clicking outside
+                document.addEventListener('click', (event) => {
+                    const isClickInsideNav = mainNav.contains(event.target);
+                    const isClickInsideToggle = menuToggle.contains(event.target);
+
+                    if (!isClickInsideNav && !isClickInsideToggle && mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                    }
+                });
+            } else {
+                console.error("Menu toggle or nav element not found.");
+            }
 
 
-            // --- Random Backgrounds ---
+             // --- Smooth Scrolling with Offset for Fixed Header ---
+             function getHeaderHeight() {
+                 return document.querySelector('header')?.offsetHeight || 70;
+             }
+
+             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                 anchor.addEventListener('click', function (e) {
+                     const hrefAttribute = this.getAttribute('href');
+                     if (hrefAttribute && hrefAttribute.length > 1 && hrefAttribute.startsWith('#')) {
+                         const targetElement = document.querySelector(hrefAttribute);
+                         if (targetElement) {
+                              e.preventDefault();
+                             const headerOffset = getHeaderHeight();
+                             const elementPosition = targetElement.getBoundingClientRect().top;
+                             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                             window.scrollTo({
+                                 top: offsetPosition,
+                                 behavior: "smooth"
+                             });
+
+                             if (mainNav && mainNav.classList.contains('active')) {
+                                 mainNav.classList.remove('active');
+                             }
+                         }
+                     }
+                 });
+             });
+
+
+            // --- Dynamic Background Images ---
             const sections = ['solve', 'services', 'about', 'writeme'];
+            const dayOfMonth = new Date().getDate();
+            let imageNumber;
+
+            if (dayOfMonth <= 7) {
+                imageNumber = 1;
+            } else if (dayOfMonth <= 14) {
+                imageNumber = 2;
+            } else if (dayOfMonth <= 21) {
+                imageNumber = 3;
+            } else { // dayOfMonth >= 22
+                imageNumber = 4;
+            }
+
             sections.forEach(sectionId => {
                 const sectionElement = document.getElementById(sectionId);
                 if (sectionElement) {
-                    const randomNum = Math.floor(Math.random() * 5) + 1;
-                    sectionElement.style.backgroundImage = `url('${sectionId}${randomNum}.jpg')`;
+                    const imageUrl = `${sectionId}${imageNumber}.jpg`;
+                    sectionElement.style.backgroundImage = `url('${imageUrl}')`;
+                     // Add error handling/fallback
+                     const img = new Image();
+                     img.src = imageUrl;
+                     img.onerror = () => {
+                         console.warn(`Background image not found or failed to load: ${imageUrl}. Applying fallback background.`);
+                         sectionElement.style.backgroundColor = '#1a1a1a'; // Dark fallback color
+                         sectionElement.style.backgroundImage = 'none';
+                     }
                 } else {
                     console.warn(`Section element with ID "${sectionId}" not found.`);
                 }
             });
 
-            // --- Random Aphorism ---
+            // --- Random Aphorism in Footer ---
             const aphorisms = [
-                "When someone is wearing a mask, he is going to tell the truth (Bob Dylan)",
+                "when someone is wearing a mask, he is going to tell the truth (Bob Dylan)", // lowercase w
                 "You can ignore reality, but you cannot ignore the consequences of ignoring reality (Ayn Rand)",
                 "Zig when others Zag",
                 "Work quickly, prioritise and delegate (Elon Musk)",
                 "Don't follow rules, follow principles",
-                "It is necessary to be superficial, the world is too complex to be fully understood"
+                "it is necessary to be superficial, the world is too complex to be fully understood"
             ];
             const aphorismElement = document.getElementById('aphorism');
             if (aphorismElement) {
                 const randomIndex = Math.floor(Math.random() * aphorisms.length);
                 aphorismElement.textContent = aphorisms[randomIndex];
+            } else {
+                console.error("Aphorism element not found.")
             }
 
-            // --- Form Handling ---
+            // --- Form Submission Logic ---
             const contactForm = document.getElementById('contact-form');
             const formMessage = document.getElementById('form-message');
 
-            if (contactForm) {
-                contactForm.addEventListener('submit', (event) => {
-                    event.preventDefault(); // Prevent default form submission
-                    formMessage.style.display = 'none'; // Hide previous messages
-                    formMessage.classList.remove('error');
+            if (contactForm && formMessage) {
+                contactForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
 
-                    try {
-                        const nameCompany = document.getElementById('name_company').value.trim();
-                        const phoneEmail = document.getElementById('phone_email').value.trim();
-                        const whatHappens = document.getElementById('what_happens').value.trim();
-                        const whatGoal = document.getElementById('what_goal').value.trim();
+                     formMessage.textContent = '';
+                     formMessage.className = '';
 
-                        // Basic validation (HTML5 'required' already helps)
-                        if (!nameCompany || !phoneEmail || !whatHappens || !whatGoal) {
-                             throw new Error("Please fill in all required fields.");
-                        }
+                    // Get form data
+                    const name = document.getElementById('name').value.trim();
+                    const contact = document.getElementById('contact').value.trim();
+                    const status = document.getElementById('status').value.trim();
+                    // const target = // Removed target field
 
-                        const formData = {
-                            name_co: nameCompany,
-                            contact: phoneEmail,
-                            issue: whatHappens,
-                            goal: whatGoal
-                        };
+                    // Validate required fields (redundant with 'required' but safe)
+                    if (!name || !contact || !status) {
+                        formMessage.textContent = 'Error: Please fill in all required fields.';
+                         formMessage.className = 'error-message';
+                        return;
+                    }
 
-                        const jsonData = JSON.stringify(formData);
-                        const compressedData = LZString.compressToBase64(jsonData);
+                    // Gather additional info (No timestamp)
+                    const referrer = document.referrer || 'Not available';
+                    const language = navigator.language || 'Not available';
+                    const userAgent = navigator.userAgent || 'Not available';
 
-                        // Optional: Check length (modern mailto limits are large, but good practice)
-                        const MAX_MAILTO_LEN = 2000; // Conservative limit
-                        if (compressedData.length > MAX_MAILTO_LEN) {
-                            throw new Error("Form data is too long after compression. Please shorten your descriptions.");
-                        }
+                    // Format data with newlines (CR/LF for email body robustness)
+                    // Use \r\n which translates to %0D%0A when URL encoded
+                    const newline = "\r\n";
+                    const formattedData = `Name/Company: ${name}${newline}` +
+                                         `Contact: ${contact}${newline}` +
+                                         `Status: ${status}${newline}` +
+                                         `---${newline}` + // Separator
+                                         `Referrer: ${referrer}${newline}` +
+                                         `Language: ${language}${newline}` +
+                                         `User Agent: ${userAgent}`;
 
-                        const subject = "Request";
-                        const mailtoBody = "DATA:" + compressedData;
-                        const mailtoLink = `mailto:pierpaolo.prandini@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailtoBody)}`;
+                    // Encode data
+                    const encodedData = encodeURIComponent(formattedData);
 
-                        // Display success message *before* attempting redirect
-                        formMessage.textContent = "An email draft with the compressed data will be opened in your email client. Please check and send it to be contacted back (if the request has sense).";
-                        formMessage.style.display = 'block';
+                    // Construct mailto link
+                    const recipient = "pierpaolo.prandini@gmail.com";
+                    const subject = "Request";
+                    // Add newline after DATA: prefix as well
+                    const bodyPrefix = "DATA:" + newline;
+                    const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyPrefix)}${encodedData}`;
 
+                    // Check length
+                    const MAX_MAILTO_LENGTH = 2000; // Approximate limit
+                    if (mailtoLink.length > MAX_MAILTO_LENGTH) {
+                        formMessage.textContent = 'Error: The entered data is too long to send via email client. Please shorten your messages.';
+                         formMessage.className = 'error-message';
+                    } else {
                         // Attempt to open mail client
-                         window.location.href = mailtoLink;
+                        try {
+                             const mailWindow = window.open(mailtoLink, '_blank');
+                             if (!mailWindow) {
+                                 // Fallback for popup blockers
+                                 window.location.href = mailtoLink;
+                             }
 
-                        // Optionally clear the form after successful preparation
-                         // contactForm.reset();
-
-                    } catch (error) {
-                        console.error("Form submission error:", error);
-                        formMessage.textContent = `Error: ${error.message || "Could not process the form. Please try again or contact directly."}`;
-                        formMessage.classList.add('error');
-                        formMessage.style.display = 'block';
+                            formMessage.textContent = 'An email draft with the compressed data will be opened in your email client, send it to be contacted back (if contact is correct and request has sense).';
+                            formMessage.className = 'success-message';
+                            // contactForm.reset(); // Optionally clear form
+                        } catch (e) {
+                            console.error("Error opening mailto link:", e);
+                            formMessage.textContent = 'Error: Could not automatically open email client. Please check your browser/device settings or copy the data manually.';
+                            formMessage.className = 'error-message';
+                        }
                     }
                 });
             } else {
-                 console.error("Contact form element not found.");
+                 console.error("Contact form or message element not found.");
             }
 
-        });
+        }); // End DOMContentLoaded
     </script>
 
 </body>
